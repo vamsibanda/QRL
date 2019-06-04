@@ -31,6 +31,7 @@ key is the unique ID for the API
 format_type is the document type (e.g. '.csv')
 Fetch data essentially takes in all of the above as its inputs, creates the remote URL call based on the inputs, reads in the associated .csv into a Pandas dataframe, and storing the result as a new .csv file in our folder.
 
+```sql
 def fetch_data(functional_value,conversion_from, conversion_to, out_size, key, format_type):
     
     url = base_url
@@ -53,6 +54,8 @@ def fetch_data(functional_value,conversion_from, conversion_to, out_size, key, f
        df.to_csv(conversion_from+'_'+conversion_to+'.csv',index = False, header=True)
     else:
        print('Currently only csv format is supported')
+```
+
 Step Two - Creating the Environment w/ envs.py
 Class TradingEnv is a three currency package trading environment. 
 
@@ -64,6 +67,7 @@ In this class, we have three different action spaces that the agent can choose:
 (1) = Hold, in this use case, the agent doesn't make any changes to the environment in buying or selling. Essentially, a neutral option.
 (2) = Buy, the agent tries to purchase the maximum number of packages of currency that are available given the amount of cash on hand.
 
+```sql
 class TradingEnv():
     
     def __init__(self, train_data, init_invest=20000):
@@ -120,6 +124,8 @@ class TradingEnv():
                 self.cash_in_hand -= self.stock_price[i]
               else:
                 can_buy = False
+                
+```
 Step Three - Creating the Agent using agent.py
 The agent explores the environment, learns it, and then uses this information from its exploration phase to exploit it.
 
@@ -129,6 +135,7 @@ In our network, our agent possesses a memory that keeps track of the last 32 sta
 
 In our method replay(), at each time step the agent selects an action, observes a reward, and entres a new state while Q is updated.
 
+```sql
 class DQNAgent(object):
   """ A simple Deep Q agent """
   def __init__(self, state_size, action_size):
@@ -174,7 +181,8 @@ class DQNAgent(object):
 
     if self.epsilon > self.epsilon_min:
       self.epsilon *= self.epsilon_decay
-      
+```
+
 Step 3.5 - Using our Neural Network in model.py
 Our model is a simple dense neural network with three hidden layers and a dropout of .5 implemented in Keras.
 
