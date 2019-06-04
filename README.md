@@ -1,5 +1,5 @@
 
-Deep Reinforcement Learning - Final Project
+**Deep Reinforcement Learning - Final Project
 Team Members: Noah Caldwell-Gatsos, Vamsi Banda
 
 For our final project for Deep Reinforcement Learning, we decided to simulate a FOREX (foreign currency exchange) trading environment and train an agent to make a decision based on the state of the environment.
