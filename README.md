@@ -15,10 +15,10 @@ agent.py = a deep Q-learning agent used to exploit the environment
 envs.py = a three-stock trading environment 
 model.py = multi-layer network used as the function approximator 
 
-## Data/
+**Data**
 All of our data is derived from Alpha Vantage, a free API for FOREX data that can be found here
 
-Step One - Data Extraction using extract.py
+## Step One - Data Extraction using extract.py
 Background: Remember that FOREX data is conducted in pairs. When you want to trade in one, or make predictions based on past data, you need to look up both the currency you'd like to trade AND the currency you'd like to recieve.
 
 Below is our .fetch_data() function that takes in the following as its arguments:
@@ -56,7 +56,7 @@ def fetch_data(functional_value,conversion_from, conversion_to, out_size, key, f
        print('Currently only csv format is supported')
 ```
 
-Step Two - Creating the Environment w/ envs.py
+## Step Two - Creating the Environment w/ envs.py
 Class TradingEnv is a three currency package trading environment. 
 
 The state is the number of currency packages owned, the current package prices, and the cash in hand of the agent. NOTE: The agent doesn't know what the current environment looks like. It has to go through the exploratory phase that will be explained in Step Three. 
@@ -126,7 +126,8 @@ class TradingEnv():
                 can_buy = False
                 
 ```
-Step Three - Creating the Agent using agent.py
+
+## Step Three - Creating the Agent using agent.py
 The agent explores the environment, learns it, and then uses this information from its exploration phase to exploit it.
 
 In this stage, because this is a Markov Decision-Process, we use a variable epsilon to express the rate of exploration - a floating point between 0 and 1. The exploration stage is the means of obtaining representative data - the agent must be exposed to as many potential states as possible to eventually maximize its decision making process and obtaining the highest reward. In unsupervised learning settings, the agent only has access to its own actions as an exploratory setting. The exploration phase counters the chicken/egg problem - the tradeoff value (the epsilon) starts at one, and then gradually decays it by .005 as it begins to explore the environment. Once it reaches a certain threshold, it will begin to make decisions (i.e. exploiting) the environment. The optimal way of identifying this point is through the implementation of a neural network approach, which defines the next action for the agent to take.
@@ -183,7 +184,7 @@ class DQNAgent(object):
       self.epsilon *= self.epsilon_decay
 ```
 
-Step 3.5 - Using our Neural Network in model.py
+## Step 4 - Using our Neural Network in model.py
 Our model is a simple dense neural network with three hidden layers and a dropout of .5 implemented in Keras.
 
 We use the Adam optimizer and mean-squared error loss to better fit the model.
@@ -217,11 +218,10 @@ Measures the reward
 Updates Q
 At the end of the training, the output will be a maximizing strategy that allows our model to exploit whichever environment its given.
 
-Demo
+**Demo**
 As displayed in the graph, our agent is very unstable. While the result is a decent profit by chance, the portfolio values are so variant that a long-term strategy is important. Some of this is endemic to the nature of FOREX trading, while additional data could help reduce some of that variance that we show in the graph.
 
 References
 Q Learning for Trading, by Siraj Raval
-
 Foundational Model that We Improved and Expanded On
 
