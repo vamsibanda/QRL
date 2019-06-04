@@ -1,0 +1,6 @@
+episode: 1/10000, episode end value: 6618.0
+episode: 2/10000, episode end value: 45704.0
+episode: 3/10000, episode end value: 24790.0
+episode: 4/10000, episode end value: 14485.0
+episode: 5/10000, episode end value: 22151.0
+episode: 6/10000, episode end value: 144080.0

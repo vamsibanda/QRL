@@ -8,7 +8,7 @@ import tensorflow as tf
 # Default hyperparameters:
 hparams = tf.contrib.training.HParams(
   # Training
-  episodes=2000,
+  episodes=1000,
   batch_size=32,
   initial_investment=50000,
   training_mode='train',
