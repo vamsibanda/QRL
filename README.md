@@ -63,30 +63,31 @@ In this class, we have three different action spaces that the agent can choose:
 (0) = Sell, in this use case, the agent sells all the currency packages.
 (1) = Hold, in this use case, the agent doesn't make any changes to the environment in buying or selling. Essentially, a neutral option.
 (2) = Buy, the agent tries to purchase the maximum number of packages of currency that are available given the amount of cash on hand.
+
 class TradingEnv():
     
     def __init__(self, train_data, init_invest=20000):
         # data
         self.stock_price_history = np.around(train_data) # round up to integer to reduce state space
         self.n_stock, self.n_step = self.stock_price_history.shape
-​
         # instance attributes
+        
         self.init_invest = init_invest
         self.cur_step = None
         self.stock_owned = None
         self.stock_price = None
         self.cash_in_hand = None
-​
+
         # action space
         self.action_space = spaces.Discrete(3**self.n_stock)
-​
+
         # observation space: give estimates in order to sample and build scaler
         stock_max_price = self.stock_price_history.max(axis=1)
         stock_range = [[0, init_invest * 2 // mx] for mx in stock_max_price]
         price_range = [[0, mx] for mx in stock_max_price]
         cash_in_hand_range = [[0, init_invest * 2]]
         self.observation_space = spaces.MultiDiscrete(stock_range + price_range + cash_in_hand_range)
-​
+
         # seed and start
         self._seed()
         self._reset()
@@ -95,7 +96,7 @@ class TradingEnv():
         # all combo to sell(0), hold(1), or buy(2) stocks
         action_combo = list(map(list, itertools.product([0, 1, 2], repeat=self.n_stock)))
         action_vec = action_combo[action]
-​
+
         # one pass to get sell/buy index
         sell_index = []
         buy_index = []
@@ -104,7 +105,7 @@ class TradingEnv():
             sell_index.append(i)
           elif a == 2:
             buy_index.append(i)
-​
+
         # two passes: sell first, then buy; might be naive in real-world settings
         if sell_index:
           for i in sell_index:
@@ -139,19 +140,16 @@ class DQNAgent(object):
     self.epsilon_min = 0.01
     self.epsilon_decay = 0.995
     self.model = mlp(state_size, action_size)
-​
-​
+
   def remember(self, state, action, reward, next_state, done):
     self.memory.append((state, action, reward, next_state, done))
-​
-​
+
   def act(self, state):
     if np.random.rand() <= self.epsilon:
       return random.randrange(self.action_size)
     act_values = self.model.predict(state)
     return np.argmax(act_values[0])  # returns action
-​
-​
+
   def replay(self, batch_size=32):
     """ vectorized implementation; 30x speed up compared with for loop """
     minibatch = random.sample(self.memory, batch_size)
@@ -166,14 +164,14 @@ class DQNAgent(object):
     target = rewards + self.gamma * np.amax(self.model.predict(next_states), axis=1)
     # end state target is reward itself (no lookahead)
     target[done] = rewards[done]
-​
+
     # Q(s, a)
     target_f = self.model.predict(states)
     # make the agent to approximately map the current state to future discounted reward
     target_f[range(batch_size), actions] = target
-​
+
     self.model.fit(states, target_f, epochs=1, verbose=0)
-​
+
     if self.epsilon > self.epsilon_min:
       self.epsilon *= self.epsilon_decay
 Step 3.5 - Using our Neural Network in model.py
@@ -184,9 +182,7 @@ The ReLU activation functions normalize linearity throughout the hidden layers.
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import Adam
-​
-​
-​
+
 def mlp(n_obs, n_action, n_hidden_layer=1, n_neuron_per_layer=32,
         activation='relu', loss='mse'):
   model = Sequential()
