@@ -153,13 +153,13 @@ class DQNAgent(object):
   def replay(self, batch_size=32):
     """ vectorized implementation; 30x speed up compared with for loop """
     minibatch = random.sample(self.memory, batch_size)
-​
+
     states = np.array([tup[0][0] for tup in minibatch])
     actions = np.array([tup[1] for tup in minibatch])
     rewards = np.array([tup[2] for tup in minibatch])
     next_states = np.array([tup[3][0] for tup in minibatch])
     done = np.array([tup[4] for tup in minibatch])
-​
+
     # Q(s', a)
     target = rewards + self.gamma * np.amax(self.model.predict(next_states), axis=1)
     # end state target is reward itself (no lookahead)
@@ -174,17 +174,18 @@ class DQNAgent(object):
 
     if self.epsilon > self.epsilon_min:
       self.epsilon *= self.epsilon_decay
+      
 Step 3.5 - Using our Neural Network in model.py
 Our model is a simple dense neural network with three hidden layers and a dropout of .5 implemented in Keras.
 
 We use the Adam optimizer and mean-squared error loss to better fit the model.
 The ReLU activation functions normalize linearity throughout the hidden layers.
+
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import Adam
 
-def mlp(n_obs, n_action, n_hidden_layer=1, n_neuron_per_layer=32,
-        activation='relu', loss='mse'):
+def mlp(n_obs, n_action, n_hidden_layer=1, n_neuron_per_layer=32,activation='relu', loss='mse'):
   model = Sequential()
   model.add(Dense(128, activation='relu', input_dim=n_obs))
   model.add(Dropout(0.5))
@@ -194,6 +195,7 @@ def mlp(n_obs, n_action, n_hidden_layer=1, n_neuron_per_layer=32,
   model.compile(loss=loss, optimizer=Adam())
   print(model.summary())
   return model
+  
 Using TensorFlow backend.
 Training the Model in run.py
 Our run.py trains and tests our logic for the program. It contains arguments to run the program from the command line. Our run.py program follows the following steps:
