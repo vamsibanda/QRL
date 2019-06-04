@@ -181,6 +181,7 @@ Our model is a simple dense neural network with three hidden layers and a dropou
 We use the Adam optimizer and mean-squared error loss to better fit the model.
 The ReLU activation functions normalize linearity throughout the hidden layers.
 
+'''
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import Adam
@@ -195,7 +196,8 @@ def mlp(n_obs, n_action, n_hidden_layer=1, n_neuron_per_layer=32,activation='rel
   model.compile(loss=loss, optimizer=Adam())
   print(model.summary())
   return model
-  
+'''
+
 Using TensorFlow backend.
 Training the Model in run.py
 Our run.py trains and tests our logic for the program. It contains arguments to run the program from the command line. Our run.py program follows the following steps:
