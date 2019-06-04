@@ -1,21 +1,21 @@
 
-**Deep Reinforcement Learning - Final Project
-Team Members: Noah Caldwell-Gatsos, Vamsi Banda
+# Deep Reinforcement Learning - Final Project
+## Team Members: Noah Caldwell-Gatsos, Vamsi Banda
 
 For our final project for Deep Reinforcement Learning, we decided to simulate a FOREX (foreign currency exchange) trading environment and train an agent to make a decision based on the state of the environment.
 
-High Level Overview of Concepts
+**High Level Overview of Concepts**
 Our project makes use of Deep Q-learning - for any finite Markov Decision-Making process, it finds an optimal policy to maximize the reward over time, starting from the current state. A Markov Decision-Making Process consists of 1) states, 2) actions, and 3) rewards, all of which are included in our environment. The action state for our model is simple, there are only three options available for the agent to take 1) buy, 2) sell, or 3) hold. The number of actions for any given timestep is 3^n, where n is the number of stocks in our portfolio.
 
 FOREX trading is a bit different from stock trading. The volume of transactions is vastly divergent, with FOREX markets trading around 5 trillion per day, while the stock market trades in around 200 billion per day. FOREX markets are highly liquid, run 24 hours a day, have little to no commissions for each trad, and have a narrow focus (there are really only eight major options to chose from, where the stock market has thousands of options. FOREX is also traded in pairs (one currency for another), so it is important for invstors to look for diverging and converging trends between the currencies to match up a pair to trade. There are a number of variables that affect the major currencies, but we won't focus on those for the purposes of this model.
 
-Model Overview
+**Model Overview**
 extract.py = extracts FOREX data from the API 
 agent.py = a deep Q-learning agent used to exploit the environment
 envs.py = a three-stock trading environment 
 model.py = multi-layer network used as the function approximator 
 
-data/
+## Data/
 All of our data is derived from Alpha Vantage, a free API for FOREX data that can be found here
 
 Step One - Data Extraction using extract.py
